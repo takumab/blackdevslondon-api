@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const mongoose = require('mongoose')
 const User = require('../models/user')
 
 
@@ -11,7 +10,7 @@ router.post('/users', async (req, res) => {
   try {
     await user.save()
 
-    const token = await User.generateAuthToken()
+    const token = await user.generateAuthToken()
     
     res.status(201).send({user, token})
 
