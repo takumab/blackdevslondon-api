@@ -26,6 +26,11 @@ const UserSchema = new Schema({
         throw new Error('Email is invalid')
       }
     }
+  },
+  password: {
+    type: String,
+    minlength: 8,
+    required: true
   }
 })
 
