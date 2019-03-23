@@ -20,6 +20,11 @@ router.post('/users', async (req, res) => {
   }
 })
 
+// GET /users/me - get current user's profile
+router.get('/users/me', auth, async (req, res) => {
+  res.send(req.user)
+})
+
 
 // POST /users/login
 router.post('/users/login', async (req, res) => {
