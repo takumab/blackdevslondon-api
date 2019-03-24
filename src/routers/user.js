@@ -1,7 +1,7 @@
 const express = require('express')
-const router = express.Router()
-const auth = require('../middleware/auth')
-const User = require('../models/user')
+const router  = express.Router()
+const auth    = require('../middleware/auth')
+const User    = require('../models/user')
 
 
 // POST /users
@@ -44,7 +44,7 @@ router.get('/users/me', auth, async (req, res) => {
   res.send(req.user)
 })
 
-// GET /user/:id - show
+// GET /user/5c9690153de56f6356ac4bd3
 router.get('/users/:id', async (req, res) => {
   const _id = req.params.id
   
@@ -65,6 +65,7 @@ router.get('/users/:id', async (req, res) => {
 
 })
 
+// PATCH /users/5c9690153de56f6356ac4bd3
 router.patch('/users/:id', async (req, res) => {
   const _id              = req.params.id 
   const updates          = Object.keys(req.body)
@@ -95,6 +96,7 @@ router.patch('/users/:id', async (req, res) => {
   }
 })
 
+// DELETE /users/5c9690153de56f6356ac4bd3
 router.delete('/users/:id', async (req, res) => {
   const _id = req.params.id
   
@@ -110,7 +112,7 @@ router.delete('/users/:id', async (req, res) => {
   } catch (e) {
 
     res.status(500).send(e)
-    
+
   }
 })
 
