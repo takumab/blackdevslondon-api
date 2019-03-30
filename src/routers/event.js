@@ -1,6 +1,6 @@
 const express = require('express')
-const router = express.Router()
-const Event = require('../models/event')
+const router  = express.Router()
+const Event   = require('../models/event')
 
 
 // POST /events
@@ -8,7 +8,6 @@ router.post('/events', async (req, res) => {
   const event = new Event(req.body)
 
   try {
-
     await event.save()
 
     res.send()
