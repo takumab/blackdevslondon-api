@@ -25,7 +25,6 @@ router.post('/users', async (req, res) => {
 router.post('/users/login', async (req, res) => {
 
   try {
-   
     const user  = await User.findByCredentials(req.body.email, req.body.password)
     const token = await user.generateAuthToken()
     
@@ -60,7 +59,6 @@ router.post('/users/logout', auth, async (req, res) => {
 
 router.post('/users/logoutAll', auth, async (req, res) => {
   try {
-    
     req.user.tokens = []
     await req.user.save()
 
@@ -79,8 +77,8 @@ router.get('/users/me', auth, async (req, res) => {
 })
 
 // PATCH /users/5c9690153de56f6356ac4bd3
-router.patch('/users/:id', async (req, res) => {
-  const _id              = req.params.id 
+router.patch('/users/me', auth, async (req, res) => {
+  // const _id              = req.params.id 
   const updates          = Object.keys(req.body)
   const allowedUpdates   = ['name', 'email', 'password']
   const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
@@ -90,18 +88,11 @@ router.patch('/users/:id', async (req, res) => {
   }
 
   try {
-    const user = await User.findById(_id)
+    updates.forEach((update) => req.user[update] = req.body[update])
+    await req.user.save()
 
-    updates.forEach((update) => user[update] = req.body[update])
-    await user.save()
-
-    if (!user) {
-      return res.status(404).send()
-    }
-
-    res.send(user)
-
-
+    res.send(req.user)
+  
   } catch (e) {
 
     res.status(400).send(e)
@@ -110,17 +101,11 @@ router.patch('/users/:id', async (req, res) => {
 })
 
 // DELETE /users/5c9690153de56f6356ac4bd3
-router.delete('/users/:id', async (req, res) => {
-  const _id = req.params.id
+router.delete('/users/me', auth, async (req, res) => {
   
   try {
-    const user = await User.findByIdAndDelete(_id)
-
-    if (!user) {
-      res.status(404).send('User not found')
-    }
-
-    res.send(user)
+    await req.user.remove()
+    res.send(req.user)
 
   } catch (e) {
 
