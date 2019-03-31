@@ -42,6 +42,17 @@ const UserSchema = new Schema({
   }]
 })
 
+// Remove password and tokens data from response
+UserSchema.methods.toJSON = function() {
+  const user       = this
+  const userObject = user.toObject()
+
+  delete userObject.password 
+  delete userObject.tokens
+
+  return userObject
+}
+
 UserSchema.methods.generateAuthToken = async function() {
   const user = this
   const token = jwt.sign({_id: user._id.toString()}, 'blackdevslondon')
