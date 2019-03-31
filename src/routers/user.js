@@ -78,27 +78,6 @@ router.get('/users/me', auth, async (req, res) => {
   res.send(req.user)
 })
 
-// GET /user/5c9690153de56f6356ac4bd3
-router.get('/users/:id', async (req, res) => {
-  const _id = req.params.id
-  
-  try {
-    const user = await User.findById(_id)
-
-    if (!user) {
-      res.status(404).send()
-    }
-
-    res.send(user)
-
-  } catch (e) {
-
-    res.status(500).send(e)
-
-  }
-
-})
-
 // PATCH /users/5c9690153de56f6356ac4bd3
 router.patch('/users/:id', async (req, res) => {
   const _id              = req.params.id 
